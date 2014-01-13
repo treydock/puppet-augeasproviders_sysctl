@@ -21,8 +21,8 @@ RSpec.configure do |c|
     puppet_install
     puppet_master_install
 
-    shell('puppet module install puppetlabs-stdlib --modulepath /etc/puppet/modules --force')
-    shell('puppet module install domcleal/augeasproviders --modulepath /etc/puppet/modules --force')
+    shell('[ -d /etc/puppet/modules/stdlib ] || puppet module install puppetlabs-stdlib --modulepath /etc/puppet/modules')
+    shell('[ -d /etc/puppet/modules/augeasproviders ] || puppet module install domcleal/augeasproviders --modulepath /etc/puppet/modules --version ">=1.0.2"')
 
     # Install sysctl module
     puppet_module_install(:source => proj_root, :module_name => 'sysctl')

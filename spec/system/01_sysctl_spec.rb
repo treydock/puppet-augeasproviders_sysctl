@@ -1,15 +1,17 @@
 require 'spec_helper_system'
 
 describe 'sysctl class:' do
-  context 'should run successfully' do
-    pp = "class { 'sysctl': }"
+  context 'with default parameters' do
+    it 'should run successfully' do
+      pp =<<-EOS
+        class { 'sysctl': }
+      EOS
   
-    context puppet_apply(pp) do
-       its(:stderr) { should be_empty }
-       its(:exit_code) { should_not == 1 }
-       its(:refresh) { should be_nil }
-       its(:stderr) { should be_empty }
-       its(:exit_code) { should be_zero }
+      puppet_apply(pp) do |r|
+       r.exit_code.should_not == 1
+       r.refresh
+       r.exit_code.should be_zero
+      end
     end
 
     describe linux_kernel_parameter('vm.swappiness') do
@@ -18,18 +20,18 @@ describe 'sysctl class:' do
   end
 
   context 'defining values parameter' do
-    pp =<<-EOS
-      class { 'sysctl': 
-        values  => {'vm.swappiness' => { 'value' => '1' }},
-      }
-    EOS
+    it 'should run successfully' do
+      pp =<<-EOS
+        class { 'sysctl': 
+          values  => {'vm.swappiness' => { 'value' => '1' }},
+        }
+      EOS
 
-    context puppet_apply(pp) do
-       its(:stderr) { should be_empty }
-       its(:exit_code) { should_not == 1 }
-       its(:refresh) { should be_nil }
-       its(:stderr) { should be_empty }
-       its(:exit_code) { should be_zero }
+      puppet_apply(pp) do |r|
+       r.exit_code.should_not == 1
+       r.refresh
+       r.exit_code.should be_zero
+      end
     end
 
     describe linux_kernel_parameter('vm.swappiness') do
