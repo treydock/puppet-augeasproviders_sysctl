@@ -1,37 +1,42 @@
-# == Class: sysctl
+# == Class: augeasproviders_sysctl
 #
-# Full description of class sysctl here.
+# Full description of class augeasproviders_sysctl here.
 #
 # === Parameters
 #
 # [*package_name*]
-#   String.  Name of package that provides the sysctl command.
+#   String.  Name of package that provides the augeasproviders_sysctl command.
 #   Default: OS dependent
 #
 # [*config_package_name*]
-#   String.  Name of package that provides the sysctl configuration file.
+#   String.  Name of package that provides the augeasproviders_sysctl configuration file.
 #   Default: OS depedent
 #
 # [*config_path*]
-#   String.  Path to the sysctl configuration file.
-#   Default: '/etc/sysctl.conf'
+#   String.  Path to the augeasproviders_sysctl configuration file.
+#   Default: '/etc/augeasproviders_sysctl.conf'
 #
 # [*values*]
-#   Hash or false.  Hash to be passed to define sysctl::value resources.
+#   Hash or false.  Hash to be passed to define augeasproviders_sysctl::value resources.
 #   Default: false
 #
 # === Examples
 #
-#  class { 'sysctl': }
+#  class { 'augeasproviders_sysctl': }
 #
 #  # Define systl::value resources
-#  class { 'sysctl':
+#  class { 'augeasproviders_sysctl':
 #    values => {
 #      'vm.swappiness' => {
 #        'value' => '0',
 #      },
 #    },
 #  }
+#
+# === Variables
+#
+# [*augeasproviders_sysctl_values*]
+#   Hash used to define sysctl resources.
 #
 # === Authors
 #
@@ -41,14 +46,20 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class sysctl (
-  $package_name         = $sysctl::params::package_name,
-  $config_package_name  = $sysctl::params::config_package_name,
-  $config_path          = $sysctl::params::config_path,
-  $values               = $sysctl::params::values
-) inherits sysctl::params {
+class augeasproviders_sysctl (
+  $package_name         = $augeasproviders_sysctl::params::package_name,
+  $config_package_name  = $augeasproviders_sysctl::params::config_package_name,
+  $config_path          = $augeasproviders_sysctl::params::config_path,
+  $values               = $augeasproviders_sysctl::params::values
+) inherits augeasproviders_sysctl::params {
 
   if $values { validate_hash($values) }
+
+  $sysctl_defaults = {
+    'ensure'  => 'present',
+    'target'  => $config_path,
+    'apply'   => true,
+  }
 
   $sysctl_packages = [$package_name, $config_package_name]
 
@@ -63,12 +74,7 @@ class sysctl (
   }
 
   if $values and !empty($values) {
-    $defaults = {
-      'ensure'  => 'present',
-      'target'  => $config_path,
-      'apply'   => true,
-    }
-    create_resources(sysctl, $values, $defaults)
+    create_resources(sysctl, $values, $sysctl_defaults)
   }
 
 }

@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe 'sysctl' do
+describe 'augeasproviders_sysctl' do
   include_context :defaults
 
   let(:facts) { default_facts }
 
-  it { should create_class('sysctl') }
-  it { should contain_class('sysctl::params') }
+  it { should create_class('augeasproviders_sysctl') }
+  it { should contain_class('augeasproviders_sysctl::params') }
 
   it { should contain_package('procps').with_ensure('present') }
   it { should contain_package('initscripts').with_ensure('present') }
@@ -47,14 +47,14 @@ describe 'sysctl' do
   describe 'invalid parameters' do
     context 'with values => "vm.foo,value,0"' do
       let(:params) {{ :values => 'vm.foo,value,0' }}
-      it { expect { should create_class('sysctl') }.to raise_error(Puppet::Error, /is not a Hash/) }
+      it { expect { should create_class('augeasproviders_sysctl') }.to raise_error(Puppet::Error, /is not a Hash/) }
     end
   end
 
   describe 'unsupported osfamily' do
     context 'with osfamily => "Debian"' do
       let(:facts) { default_facts.merge({ :osfamily => "Debian" }) }
-      it { expect { should contain_class('sysctl::params')}.to raise_error(Puppet::Error, /Unsupported osfamily: Debian/) }
+      it { expect { should contain_class('augeasproviders_sysctl::params')}.to raise_error(Puppet::Error, /Unsupported osfamily: Debian/) }
     end
   end
 end

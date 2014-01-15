@@ -1,11 +1,6 @@
-# == Class: sysctl::params
+# == Class: sysctl::augeasproviders_sysctl
 #
-# The sysctl configuration settings.
-#
-# === Variables
-#
-# [*sysctl_values*]
-#   Hash used to define sysctl::value resources.
+# The augeasproviders_sysctl configuration settings.
 #
 # === Authors
 #
@@ -15,11 +10,11 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-class sysctl::params {
+class augeasproviders_sysctl::params {
 
-  $values = $::sysctl_values ? {
+  $values = $::augeasproviders_sysctl_values ? {
     undef   => false,
-    default => $::sysctl_values,
+    default => $::augeasproviders_sysctl_values,
   }
 
   case $::osfamily {

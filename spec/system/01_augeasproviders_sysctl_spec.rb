@@ -1,10 +1,10 @@
 require 'spec_helper_system'
 
-describe 'sysctl class:' do
+describe 'augeasproviders_sysctl class:' do
   context 'with default parameters' do
     it 'should run successfully' do
       pp =<<-EOS
-        class { 'sysctl': }
+        class { 'augeasproviders_sysctl': }
       EOS
   
       puppet_apply(pp) do |r|
@@ -22,7 +22,7 @@ describe 'sysctl class:' do
   context 'defining values parameter' do
     it 'should run successfully' do
       pp =<<-EOS
-        class { 'sysctl': 
+        class { 'augeasproviders_sysctl': 
           values  => {'vm.swappiness' => { 'value' => '1' }},
         }
       EOS
